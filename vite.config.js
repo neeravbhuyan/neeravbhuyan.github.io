@@ -1,13 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import legacy from '@vitejs/plugin-legacy'
+import { readFileSync, writeFileSync } from 'fs'
+import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
     react(),
-    legacy({
-      targets: ['defaults', 'not IE 11']
-    })
+    {
+      name: 'fix-github-pages',
+      closeBundle() {
+        const indexPath = resolve(__dirname, 'docs/index.html')
+        let html = readFileSync(indexPath, 'utf-8')
+        html = html.replace('type="module"', '')
+        writeFileSync(indexPath, html)
+      }
+    }
   ],
   base: '/',
   build: {
