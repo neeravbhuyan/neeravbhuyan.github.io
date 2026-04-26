@@ -1,30 +1,43 @@
 export const profile = {
   name: "Neerav Bhuyan",
-  title: "BSDS @ ISI Delhi",
-  about: "Passionate about applying data science and statistical concepts to real world problems",
-  
-  skills: ["Python", "R", "C++", "Convex Optimization", "Statistical Modelling", "Statistical Data Analysis"],
-
+  title: "Statistics & Data Science Student",
+  subtitle:
+    "Eager to learn and apply my knowledge in statistics, data science and mathematics to solve real world problems.",
   projects: [
     {
       title: "Billboard Top Songs Analysis (2018–2025)",
-      desc: "This report investigates the acoustic and structural properties of the Billboard Year-End Hot 100 songs across eight years (2018–2025). We constructed a unified dataset by combining Spotify audio features, Maven Analytics-curated song charts, and high-level audio descriptors retrieved from MusicBrainz and AcousticBrainz. The pipeline involved custom Python scripts per year to collect, normalise, and impute missing data, followed by statistical analysis in R. Four central research questions are examined: (1) what acoustic features predict happiness in a song; (2) whether acousticness has shifted over time; (3) whether song duration influences chart rank; and (4) whether popular music is becoming more formulaic.",
+      desc: "A comprehensive data-driven exploration of 800 Billboard Hot 100 tracks using R and Python, bridging Spotify API, Maven Analytics, and AcousticBrainz to uncover sonic characteristics of chart success. Implemented KNN imputation for missing data, analyzed happiness correlations, acoustic trends, and pop music evolution.",
+      tags: ["Python", "R", "Data Analysis", "Machine Learning", "API Integration"],
     },
     {
-      title: "A Convex Optimization Approach to Constrained LPG Allocation",
-      desc: "This project formulates a data-driven convex optimization model to manage national liquefied petroleum gas (LPG) rationing during severe supply chain disruptions.",
-    }
+      title: "Constrained LPG Allocation Model",
+      desc: "Developed a data-driven convex optimization model to manage national LPG rationing during severe supply chain disruptions caused by geopolitical conflicts. Formulated a strictly convex Quadratic Programming problem to optimally allocate constrained fuel across domestic and commercial sectors.",
+      tags: ["Optimization", "Python", "Mathematical Modeling", "Policy Analysis", "Data Science"],
+    },
   ],
-
+  skills: [
+    "React",
+    "Vite",
+    "Framer Motion",
+    "JavaScript",
+    "TypeScript",
+    "CSS",
+    "Python",
+    "R",
+    "Responsive Design",
+    "Data Storytelling",
+  ],
   education: [
     {
-      place: "ISI Delhi",
-      degree: "BSDS(Hons.)"
-    }
+      institution: "Indian Statistical Institute",
+      degree: "Bachelor's of Statistical Data Science",
+      period: "2025 — Present",
+      details: "Focused on statistical modelling, optimization, and applied machine learning.",
+    },
   ],
-
   contact: {
     email: "neeravbhuyan@gmail.com",
-    linkedin: "www.linkedin.com/in/neerav-bhuyan-401542269"
-  }
+    linkedin: "https://www.linkedin.com/in/neerav-bhuyan-401542269",
+    location: "New Delhi, India",
+  },
 };

@@ -7,14 +7,16 @@ import Contact from "./components/Contact";
 
 function App() {
   return (
-    <>
+    <div className="page-shell">
       <Navbar />
-      <Hero />
-      <Projects />
-      <Skills />
-      <Education />
-      <Contact />
-    </>
+      <main className="content">
+        <Hero />
+        <Projects />
+        <Skills />
+        <Education />
+        <Contact />
+      </main>
+    </div>
   );
 }
 
