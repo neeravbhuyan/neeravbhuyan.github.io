@@ -27,7 +27,7 @@ export const profile = {
       tags: ["Optimization", "Python", "Mathematical Modeling", "Policy Analysis", "Data Science"],
       resources: [
         {
-          title: "ONM Project Report",
+          title: "Report",
           type: "PDF",
           href: "/resources/ONM-Project-Report.pdf",
         },
