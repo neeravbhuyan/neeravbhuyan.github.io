@@ -8,11 +8,30 @@ export const profile = {
       title: "Billboard Top Songs Analysis (2018–2025)",
       desc: "A comprehensive data-driven exploration of 800 Billboard Hot 100 tracks using R and Python, bridging Spotify API, Maven Analytics, and AcousticBrainz to uncover sonic characteristics of chart success. Implemented KNN imputation for missing data, analyzed happiness correlations, acoustic trends, and pop music evolution.",
       tags: ["Python", "R", "Data Analysis", "Machine Learning", "API Integration"],
+      resources: [
+        {
+          title: "DARP Presentation",
+          type: "HTML",
+          href: "/resources/DARP-Presentation.html",
+        },
+        {
+          title: "Slide Deck",
+          type: "PDF",
+          href: "/resources/DARP-Project-ppt.pdf",
+        },
+      ],
     },
     {
       title: "Constrained LPG Allocation Model",
       desc: "Developed a data-driven convex optimization model to manage national LPG rationing during severe supply chain disruptions caused by geopolitical conflicts. Formulated a strictly convex Quadratic Programming problem to optimally allocate constrained fuel across domestic and commercial sectors.",
       tags: ["Optimization", "Python", "Mathematical Modeling", "Policy Analysis", "Data Science"],
+      resources: [
+        {
+          title: "ONM Project Report",
+          type: "PDF",
+          href: "/resources/ONM-Project-Report.pdf",
+        },
+      ],
     },
   ],
   skills: [

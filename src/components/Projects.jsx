@@ -30,6 +30,25 @@ export default function Projects() {
                 <span key={tag}>{tag}</span>
               ))}
             </div>
+            {project.resources?.length > 0 && (
+              <div className="project-resources">
+                <strong>Resources</strong>
+                <div className="project-resource-list">
+                  {project.resources.map((resource) => (
+                    <a
+                      key={resource.title}
+                      className="project-resource"
+                      href={resource.href}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {resource.title}
+                      {resource.type ? <span className="resource-type">{resource.type}</span> : null}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.article>
         ))}
       </div>
