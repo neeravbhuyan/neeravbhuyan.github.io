@@ -10,7 +10,7 @@ export const profile = {
       tags: ["Python", "R", "Data Analysis", "Machine Learning", "API Integration"],
       resources: [
         {
-          title: "DARP Presentation",
+          title: "Slide Deck",
           type: "HTML",
           href: "/resources/DARP-Presentation.html",
         },
