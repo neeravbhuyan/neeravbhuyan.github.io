@@ -12,7 +12,7 @@ export const profile = {
         {
           title: "Slide Deck",
           type: "HTML",
-          href: "/resources/DARP-Presentation.html",
+          href: "/resources/slide deck.html",
         },
         {
           title: "Report",
