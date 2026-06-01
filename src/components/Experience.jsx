@@ -4,7 +4,7 @@ const experiences = [
   {
     company: "CODSOFT",
     role: "Data Science Intern",
-    duration: "May 2026 – June 2026",
+    duration: "May 2026 - June 2026",
     location: "Remote",
     points: [
       "Completed various tasks by utilising statistical tools like linear regression, logistic regression and random forest.",
@@ -18,14 +18,16 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <section className="experience-section" id="experience">
+    <section className="section experience-section" id="experience">
+      <div className="section-header">
+        <span>My journey</span>
+        <h2>Work Experience</h2>
+      </div>
+
       <div className="experience-container">
-        <h2 className="experience-heading">
-          <span className="experience-heading-accent">Work</span> Experience
-        </h2>
         <div className="experience-timeline">
-          {experiences.map((exp, index) => (
-            <div className="experience-card" key={index}>
+          {experiences.map((exp) => (
+            <div className="experience-card" key={exp.company}>
               <div className="experience-card-left">
                 <span className="experience-company">{exp.company}</span>
                 <span className="experience-duration">{exp.duration}</span>
@@ -54,7 +56,7 @@ export default function Experience() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span>⌥</span> View Repository ↗
+                    View Repository
                   </a>
                 )}
               </div>
