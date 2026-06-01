@@ -3,15 +3,15 @@ import "./Experience.css";
 const experiences = [
   {
     company: "CODSOFT",
-    role: "Software Development Intern",
-    duration: "June 2024 – July 2024", // ← update these dates
+    role: "Data Science Intern",
+    duration: "May 2026 – June 2026", 
     location: "Remote",
     points: [
-      "Built and deployed [X feature/project] using React and Node.js.", // ← fill in your work
-      "Collaborated with a cross-functional team to design and implement RESTful APIs.",
-      "Improved application performance by optimizing database queries and front-end rendering.",
+      "Completed various tasks by utilising statistical tools like linear regression, logistic regression and random forest.", // ← fill in your work
+      "Created models to predict survival outcomes, ratings and sales predictions.",
+      "Learned to communicate results and apply them meaningfully.",
     ],
-    tech: ["React", "Node.js", "JavaScript", "Git"], // ← update your tech stack
+    tech: ["dplyr (R)", "ggplot2 (R)", "randomforest (R)", "caret (R)"], // ← update your tech stack
   },
   // Add more internships here in the same format
 ];
