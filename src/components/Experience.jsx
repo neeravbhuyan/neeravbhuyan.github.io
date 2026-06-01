@@ -3,18 +3,17 @@ import "./Experience.css";
 const experiences = [
   {
     company: "CODSOFT",
-    role: "Data Science Intern",
-    duration: "May 2026 – June 2026", 
+    role: "Software Development Intern",
+    duration: "May 2026 – June 2026",
     location: "Remote",
     points: [
-      "Completed various tasks by utilising statistical tools like linear regression, logistic regression and random forest.", // ← fill in your work
+      "Completed various tasks by utilising statistical tools like linear regression, logistic regression and random forest.",
       "Created models to predict survival outcomes, ratings and sales predictions.",
       "Learned to communicate results and apply them meaningfully.",
     ],
-    tech: ["dplyr (R)", "ggplot2 (R)", "randomforest (R)", "caret (R)"], // ← update your tech stack
+    tech: ["dplyr (R)", "ggplot2 (R)", "randomforest (R)", "caret (R)"],
     repoLink: "https://github.com/neeravbhuyan/CODSOFT",
   },
-  // Add more internships here in the same format
 ];
 
 export default function Experience() {
@@ -24,7 +23,6 @@ export default function Experience() {
         <h2 className="experience-heading">
           <span className="experience-heading-accent">Work</span> Experience
         </h2>
-
         <div className="experience-timeline">
           {experiences.map((exp, index) => (
             <div className="experience-card" key={index}>
@@ -33,12 +31,10 @@ export default function Experience() {
                 <span className="experience-duration">{exp.duration}</span>
                 <span className="experience-location">{exp.location}</span>
               </div>
-
               <div className="experience-divider">
                 <div className="experience-dot" />
                 <div className="experience-line" />
               </div>
-
               <div className="experience-card-right">
                 <h3 className="experience-role">{exp.role}</h3>
                 <ul className="experience-points">
