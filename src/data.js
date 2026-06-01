@@ -42,7 +42,7 @@ export const profile = {
     "R",
   ],
   skills: [
-    "React",
+    "API Integration",
     "Pandas",
     "dplyr",
     "ggplot2",
