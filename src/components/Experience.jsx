@@ -12,6 +12,7 @@ const experiences = [
       "Learned to communicate results and apply them meaningfully.",
     ],
     tech: ["dplyr (R)", "ggplot2 (R)", "randomforest (R)", "caret (R)"], // ← update your tech stack
+    repoLink: "https://github.com/neeravbhuyan/CODSOFT",
   },
   // Add more internships here in the same format
 ];
