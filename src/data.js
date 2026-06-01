@@ -44,6 +44,7 @@ export const profile = {
   skills: [
     "React",
     "Pandas",
+    "dplyr",
     "ggplot2",
     "lattice",
     "Statistical Modelling",
