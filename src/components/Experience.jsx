@@ -3,7 +3,7 @@ import "./Experience.css";
 const experiences = [
   {
     company: "CODSOFT",
-    role: "Software Development Intern",
+    role: "Data Science Intern",
     duration: "May 2026 – June 2026",
     location: "Remote",
     points: [
