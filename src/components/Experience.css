@@ -151,6 +151,23 @@
   letter-spacing: 0.04em;
 }
 
+.experience-repo-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 0.78rem;
+  font-family: monospace;
+  color: var(--accent, #64ffda);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+  letter-spacing: 0.04em;
+}
+
+.experience-repo-link:hover {
+  border-bottom-color: var(--accent, #64ffda);
+  opacity: 0.8;
+}
+
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .experience-card {
