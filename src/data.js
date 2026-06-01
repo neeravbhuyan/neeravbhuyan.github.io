@@ -63,6 +63,7 @@ export const profile = {
   contact: {
     email: "neeravbhuyan@gmail.com",
     linkedin: "https://www.linkedin.com/in/neerav-bhuyan-401542269",
+    github: "https://github.com/neeravbhuyan",
     location: "New Delhi, India",
   },
 };

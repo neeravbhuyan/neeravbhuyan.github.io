@@ -33,6 +33,14 @@ export default function Contact() {
           >
             LinkedIn profile
           </a>
+          <a
+            className="btn ghost"
+            href={profile.contact.github}
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub profile
+          </a>
         </div>
 
         <p className="contact-meta">{profile.contact.location}</p>
