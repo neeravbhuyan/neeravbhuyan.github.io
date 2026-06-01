@@ -51,6 +51,16 @@ export default function Experience() {
                     <span className="experience-tag" key={i}>{t}</span>
                   ))}
                 </div>
+                {exp.repoLink && (
+  
+                    className="experience-repo-link"
+                    href={exp.repoLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>⌥</span> View Repository ↗
+                  </a>
+                )}
               </div>
             </div>
           ))}
