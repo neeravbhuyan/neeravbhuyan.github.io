@@ -48,7 +48,7 @@ export default function Experience() {
                   ))}
                 </div>
                 {exp.repoLink && (
-                  
+                  <a
                     className="experience-repo-link"
                     href={exp.repoLink}
                     target="_blank"
