@@ -2,7 +2,7 @@ export const profile = {
   name: "Neerav Bhuyan",
   title: "Statistics & Data Science Student",
   subtitle:
-    "Eager to learn and apply my knowledge in statistics, data science and mathematics to solve real world problems.",
+    "Eager to learn new concepts and apply my knowledge in statistics, data science and mathematics to solve real world problems.",
   projects: [
     {
       title: "Billboard Top Songs Analysis (2018–2025)",
