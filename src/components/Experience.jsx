@@ -11,7 +11,7 @@ const experiences = [
       "Created models to predict survival outcomes, ratings and sales predictions.",
       "Learned to communicate results and apply them meaningfully.",
     ],
-    tech: ["dplyr (R)", "ggplot2 (R)", "randomforest (R)", "caret (R)"],
+    tech: ["dplyr", "ggplot2", "randomforest", "caret"],
     repoLink: "https://github.com/neeravbhuyan/CODSOFT",
   },
 ];
