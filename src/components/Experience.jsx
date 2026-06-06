@@ -11,7 +11,7 @@ const experiences = [
       "Created models to predict survival outcomes, movie ratings and sales predictions.",
       "Learned to communicate results and apply them meaningfully.",
     ],
-    tech: ["dplyr", "ggplot2", "randomforest", "caret"],
+    tech: ["dplyr", "ggplot2", "randomForest", "caret", "matplotlib.pyplot", "scikit-learn", "pandas", "numpy"],
     repoLink: "https://github.com/neeravbhuyan/CODSOFT",
   },
 ];
