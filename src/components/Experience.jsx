@@ -8,7 +8,7 @@ const experiences = [
     location: "Remote",
     points: [
       "Completed various tasks by utilising statistical tools like linear regression, logistic regression and random forest.",
-      "Created models to predict survival outcomes, ratings and sales predictions.",
+      "Created models to predict survival outcomes, movie ratings and sales predictions.",
       "Learned to communicate results and apply them meaningfully.",
     ],
     tech: ["dplyr", "ggplot2", "randomforest", "caret"],
