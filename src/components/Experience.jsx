@@ -14,6 +14,18 @@ const experiences = [
     tech: ["dplyr", "ggplot2", "randomForest", "caret", "matplotlib.pyplot", "scikit-learn", "pandas", "numpy"],
     repoLink: "https://github.com/neeravbhuyan/CODSOFT",
   },
+  {
+    company: "IIT Ropar",
+    role: "NS2ML-DE 2026 Workshop Participant",
+    duration: "July 06 - July 10, 2026",
+    location: "Rupnagar, India",
+    points: [
+      "Attended the NS2ML-DE 2026 workshop organized by the Department of Mathematics at IIT Ropar.",
+      "Explored numerical methods and machine learning algorithms for solving ordinary and partial differential equations.",
+      "Participated in lectures by eminent speakers and hands-on Matlab lab sessions.",
+    ],
+    tech: ["Numerical Methods", "Machine Learning", "Differential Equations", "Matlab"],
+  },
 ];
 
 export default function Experience() {

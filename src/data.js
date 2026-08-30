@@ -68,6 +68,24 @@ export const profile = {
       ],
     },
   ],
+  achievements: [
+    {
+      title: "Secured AIR 18 in ISI BSDS Merit List.",
+      resources: [
+        {
+          title: "Proof",
+          type: "PDF",
+          href: "/resources/ISI-BSDS-Offer-Letter.pdf",
+        },
+      ],
+    },
+    {
+      title: "Got 98.36 percentile in JEE Mains 2025 (98.98 percentile in Maths).",
+    },
+    {
+      title: "Got 99.97 percentile in Maths in CUET-UG 2025.",
+    },
+  ],
   contact: {
     email: "neeravbhuyan@gmail.com",
     linkedin: "https://www.linkedin.com/in/neerav-bhuyan-401542269",
