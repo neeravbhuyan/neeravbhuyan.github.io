@@ -2,7 +2,7 @@ export const profile = {
   name: "Neerav Bhuyan",
   title: "Statistics & Data Science Student",
   subtitle:
-    "Statistics & Data Science student exploring AI, Computer Vision, and Machine Learning. Interested in deep learning, visual perception, 3D computer vision, and the intersection of AI and robotics. I enjoy turning mathematical ideas into intelligent systems that can see, learn, and understand the world.",
+    "Statistics is the foundation of how I think; AI is where I want to apply it. I’m a Statistics and Data Science student interested in Machine Learning, Computer Vision, and intelligent systems. I enjoy combining statistical reasoning, mathematics, and programming to turn data into models that can learn, perceive, and make decisions.Statistics is the foundation of how I think; AI is where I want to apply it. I’m a Statistics and Data Science student interested in Machine Learning, Computer Vision, and intelligent systems. I enjoy combining statistical reasoning, mathematics, and programming to turn data into models that can learn, perceive, and make decisions.",
   projects: [
     {
       title: "Billboard Top Songs Analysis (2018–2025)",
