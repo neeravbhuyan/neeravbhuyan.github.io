@@ -18,8 +18,8 @@ export default function Hero() {
           <a href="#contact" className="btn accent">
             Let’s connect
           </a>
-          <a href="#projects" className="btn ghost">
-            View projects
+          <a href="/Resume.pdf" className="btn ghost" target="_blank" rel="noreferrer">
+            Resume
           </a>
         </div>
       </motion.div>
