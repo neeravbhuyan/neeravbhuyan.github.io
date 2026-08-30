@@ -19,7 +19,7 @@ export default function Hero() {
             Let’s connect
           </a>
           <a href="/Resume.pdf" className="btn ghost" target="_blank" rel="noreferrer">
-            Resume
+            View CV
           </a>
         </div>
       </motion.div>
