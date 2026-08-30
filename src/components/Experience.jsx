@@ -25,6 +25,13 @@ const experiences = [
       "Participated in lectures by eminent speakers and hands-on Matlab lab sessions.",
     ],
     tech: ["Numerical Methods", "Machine Learning", "Differential Equations", "Matlab"],
+    resources: [
+      {
+        title: "Certificate",
+        type: "JPEG",
+        href: "/resources/IIT-Ropar-NS2ML-DE-Certificate.jpeg",
+      },
+    ],
   },
 ];
 
@@ -70,6 +77,22 @@ export default function Experience() {
                   >
                     View Repository
                   </a>
+                )}
+                {exp.resources?.length > 0 && (
+                  <div className="experience-resource-list">
+                    {exp.resources.map((resource) => (
+                      <a
+                        key={resource.title}
+                        className="project-resource"
+                        href={resource.href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {resource.title}
+                        {resource.type ? <span className="resource-type">{resource.type}</span> : null}
+                      </a>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

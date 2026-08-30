@@ -9,18 +9,19 @@ export default function Achievements() {
         <h2>Achievements</h2>
       </div>
 
-      <div className="achievement-list">
+      <div className="achievement-grid">
         {profile.achievements.map((achievement, index) => (
           <motion.article
             key={achievement.title}
-            className="achievement-card"
+            className={`achievement-card${index === 0 ? " achievement-card-featured" : ""}`}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
           >
-            <span className="achievement-rank">{String(index + 1).padStart(2, "0")}</span>
             <div className="achievement-content">
+              <span className="achievement-label">{String(index + 1).padStart(2, "0")}</span>
+              <strong className="achievement-metric">{achievement.metric}</strong>
               <h3>{achievement.title}</h3>
               {achievement.details ? <p>{achievement.details}</p> : null}
               {achievement.resources?.length > 0 && (

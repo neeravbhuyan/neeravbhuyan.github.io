@@ -58,7 +58,7 @@ export const profile = {
       institution: "Indian Statistical Institute",
       degree: "Bachelor's of Statistical Data Science",
       period: "2025 — Present",
-      details: "Focused on statistical modelling, optimization, and applied machine learning.",
+      details: "Currently pursuing a rigorous programme focused on statistical modelling, optimization, inference, and applied machine learning.",
       resources: [
         {
           title: "Transcript",
@@ -70,7 +70,9 @@ export const profile = {
   ],
   achievements: [
     {
-      title: "Secured AIR 18 in ISI BSDS Merit List.",
+      metric: "AIR 18",
+      title: "ISI BSDS Merit List",
+      details: "Secured All India Rank 18 in the Indian Statistical Institute's Bachelor of Statistical Data Science merit list, placing among the top candidates in a highly competitive admissions cohort.",
       resources: [
         {
           title: "Proof",
@@ -80,10 +82,14 @@ export const profile = {
       ],
     },
     {
-      title: "Got 98.36 percentile in JEE Mains 2025 (98.98 percentile in Maths).",
+      metric: "98.36",
+      title: "JEE Main 2025 Percentile",
+      details: "Achieved 98.36 percentile overall in JEE Main 2025, with 98.98 percentile in Mathematics.",
     },
     {
-      title: "Got 99.97 percentile in Maths in CUET-UG 2025.",
+      metric: "99.97",
+      title: "CUET-UG 2025 Mathematics Percentile",
+      details: "Scored 99.97 percentile in Mathematics in CUET (UG) 2025, reflecting strong analytical and quantitative ability.",
     },
   ],
   contact: {

@@ -413,39 +413,70 @@ a {
   gap: 10px;
 }
 
-.achievement-list {
+.achievement-grid {
   display: grid;
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .achievement-card {
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: 18px;
   padding: 24px;
   border-radius: 10px;
   background: var(--surface);
   border: 1px solid var(--border-muted);
   backdrop-filter: blur(18px);
+  min-height: 240px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
-.achievement-rank {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
+.achievement-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(100, 255, 218, 0.5);
+  box-shadow: 0 16px 30px rgba(11, 17, 32, 0.18);
+}
+
+.achievement-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.14), transparent 42%);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.achievement-card-featured {
+  grid-column: span 2;
+}
+
+.achievement-card-featured .achievement-metric {
+  font-size: clamp(3rem, 7vw, 5.6rem);
+}
+
+.achievement-content {
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+
+.achievement-label {
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 4px;
   background: var(--surface-soft);
   border: 1px solid var(--border);
   color: var(--accent);
   font-family: monospace;
-  font-size: 0.9rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
 }
 
-.achievement-content {
-  display: grid;
-  gap: 10px;
+.achievement-metric {
+  color: var(--accent);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.9;
+  font-weight: 800;
 }
 
 .achievement-content h3 {
@@ -463,6 +494,13 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.experience-resource-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .contact-card {
@@ -498,8 +536,13 @@ a {
     width: min(100%, calc(100% - 32px));
   }
 
-  .projects-grid {
+  .projects-grid,
+  .achievement-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .achievement-card-featured {
+    grid-column: span 2;
   }
 }
 
@@ -515,6 +558,7 @@ a {
   }
 
   .projects-grid,
+  .achievement-grid,
   .skills-grid {
     grid-template-columns: 1fr;
   }
@@ -532,8 +576,8 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .achievement-card {
-    grid-template-columns: 1fr;
+  .achievement-card-featured {
+    grid-column: span 1;
   }
 }
 
