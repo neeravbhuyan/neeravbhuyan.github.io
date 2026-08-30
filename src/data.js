@@ -75,7 +75,7 @@ export const profile = {
       details: "Secured All India Rank 18 in the Indian Statistical Institute's Bachelor of Statistical Data Science merit list, placing among the top candidates in a highly competitive admissions cohort.",
       resources: [
         {
-          title: "Proof",
+          title: "View Document",
           type: "PDF",
           href: "/resources/ISI-BSDS-Offer-Letter.pdf",
         },
