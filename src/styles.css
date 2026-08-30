@@ -407,6 +407,12 @@ a {
   color: var(--text-secondary);
 }
 
+.education-resource-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .contact-card {
   display: grid;
   gap: 24px;

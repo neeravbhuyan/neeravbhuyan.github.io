@@ -59,6 +59,13 @@ export const profile = {
       degree: "Bachelor's of Statistical Data Science",
       period: "2025 — Present",
       details: "Focused on statistical modelling, optimization, and applied machine learning.",
+      resources: [
+        {
+          title: "Transcript",
+          type: "PDF",
+          href: "/resources/BSDDH2515.pdf",
+        },
+      ],
     },
   ],
   contact: {

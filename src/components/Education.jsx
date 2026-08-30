@@ -35,6 +35,22 @@ export default function Education() {
                 <ul className="experience-points">
                   <li>{item.details}</li>
                 </ul>
+                {item.resources?.length > 0 && (
+                  <div className="education-resource-list">
+                    {item.resources.map((resource) => (
+                      <a
+                        key={resource.title}
+                        className="project-resource"
+                        href={resource.href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {resource.title}
+                        {resource.type ? <span className="resource-type">{resource.type}</span> : null}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}
