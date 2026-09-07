@@ -40,7 +40,7 @@ export default function Experience() {
     <section className="section experience-section" id="experience">
       <div className="section-header">
         <span>My journey</span>
-        <h2>Work Experience</h2>
+        <h2>Experience</h2>
       </div>
 
       <div className="experience-container">
