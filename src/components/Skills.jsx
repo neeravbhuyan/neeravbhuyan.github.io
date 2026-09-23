@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const categories = [
-  { id: 'all', label: 'All' },
   { id: 'languages', label: 'Programming' },
   { id: 'web', label: 'Web Tech' },
   { id: 'datascience', label: 'Statistical Tools' },
@@ -11,10 +10,25 @@ const categories = [
 
 const skillsData = [
   // Programming Languages
-  { name: 'Python', category: 'languages', level: 'Proficient' },
-  { name: 'R', category: 'languages', level: 'Proficient' },
-  { name: 'SQL', category: 'languages', level: 'Intermediate' },
-  { name: 'C++', category: 'languages', level: 'Intermediate' },
+  {
+    name: 'Python',
+    category: 'languages',
+    level: 'Proficient',
+    libraries: [
+      'Pandas',
+      'NumPy',
+      'SciPy',
+      'Scikit-learn',
+      'Matplotlib',
+      'OpenCV',
+    ],
+  },
+  {
+    name: 'R',
+    category: 'languages',
+    level: 'Proficient',
+    libraries: ['dplyr', 'ggplot2', 'lattice'],
+  },
 
   // Web Tech
   { name: 'HTML5 & CSS3', category: 'web', level: 'Intermediate' },
@@ -40,11 +54,10 @@ const skillsData = [
 ];
 
 export default function Skills() {
-  const [activeTab, setActiveTab] = useState('all');
+  // Defaults directly to the first category instead of 'all'
+  const [activeTab, setActiveTab] = useState('languages');
 
-  const filteredItems = activeTab === 'all'
-    ? skillsData
-    : skillsData.filter((item) => item.category === activeTab);
+  const filteredItems = skillsData.filter((item) => item.category === activeTab);
 
   return (
     <section id="skills" className="section skills-section">
@@ -52,7 +65,7 @@ export default function Skills() {
         <h2 className="section-title">Skills & Languages</h2>
         <div className="section-divider"></div>
 
-        {/* Tab Controls */}
+        {/* Category Tabs */}
         <div className="skills-tabs-container">
           {categories.map((tab) => (
             <button
@@ -66,14 +79,30 @@ export default function Skills() {
           ))}
         </div>
 
-        {/* Unified Grid */}
+        {/* Skills Cards Grid */}
         <div className="skills-grid">
           {filteredItems.map((item, index) => (
-            <div key={index} className="skill-card">
+            <div
+              key={index}
+              className={`skill-card ${item.libraries ? 'has-libraries' : ''}`}
+            >
               <div className="skill-content">
-                <span className="skill-name">{item.name}</span>
-                {item.level && (
-                  <span className="skill-badge">{item.level}</span>
+                <div className="skill-header">
+                  <span className="skill-name">{item.name}</span>
+                  {item.level && (
+                    <span className="skill-badge">{item.level}</span>
+                  )}
+                </div>
+
+                {/* Sub-tags for Python and R libraries */}
+                {item.libraries && item.libraries.length > 0 && (
+                  <div className="skill-libraries">
+                    {item.libraries.map((lib, libIdx) => (
+                      <span key={libIdx} className="library-pill">
+                        {lib}
+                      </span>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>
