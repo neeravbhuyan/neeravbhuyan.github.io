@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { skills, languages } from '../data'; // Pulling directly from your data.js
+import { skills } from '../data'; // Pulling directly from your data.js
 
 export default function Skills() {
   const [activeTab, setActiveTab] = useState('all');
