@@ -7,7 +7,7 @@ export const profile = {
     {
       title: "Billboard Top Songs Analysis (2018–2025)",
       desc: "A comprehensive data-driven exploration of 800 Billboard Hot 100 tracks using R and Python, bridging Spotify API, Maven Analytics, and AcousticBrainz to uncover sonic characteristics of chart success. Implemented KNN imputation for missing data, analyzed happiness correlations, acoustic trends, and pop music evolution.",
-      tags: ["Pandas(Software)", "R", "Data Analysis", "Machine Learning", "API Integration"],
+      tags: ["Python", "R", "Data Analysis", "Machine Learning", "API Integration"],
       resources: [
         {
           title: "Slide Deck",
