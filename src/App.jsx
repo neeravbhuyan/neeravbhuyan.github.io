@@ -1,7 +1,6 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
-import Languages from "./components/Languages";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
@@ -15,7 +14,6 @@ function App() {
       <main className="content">
         <Hero />
         <Projects />
-        <Languages />
         <Skills />
         <Experience />
         <Education />
