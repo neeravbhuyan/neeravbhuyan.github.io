@@ -54,7 +54,6 @@ const skillsData = [
 ];
 
 export default function Skills() {
-  // Defaults directly to the first category instead of 'all'
   const [activeTab, setActiveTab] = useState('languages');
 
   const filteredItems = skillsData.filter((item) => item.category === activeTab);
@@ -79,7 +78,7 @@ export default function Skills() {
           ))}
         </div>
 
-        {/* Skills Cards Grid */}
+        {/* Unified Grid */}
         <div className="skills-grid">
           {filteredItems.map((item, index) => (
             <div
