@@ -671,3 +671,57 @@ a {
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
 }
+
+/* Card Container Adjustments */
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  min-height: 72px;
+}
+
+.skill-card.has-libraries {
+  grid-column: span 1;
+}
+
+@media (min-width: 768px) {
+  .skill-card.has-libraries {
+    grid-column: span 2; /* Gives Python and R more breathing room for their library chips */
+  }
+}
+
+.skill-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+/* Sub-badges for Libraries */
+.skill-libraries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.library-pill {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary, #cbd5e1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.library-pill:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--accent, #38bdf8);
+}
