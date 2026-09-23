@@ -4,38 +4,39 @@ const categories = [
   { id: 'all', label: 'All' },
   { id: 'languages', label: 'Programming' },
   { id: 'web', label: 'Web Tech' },
-  { id: 'datascience', label: 'Data Science & ML' },
+  { id: 'datascience', label: 'Statistical Tools' },
   { id: 'tools', label: 'Tools' },
   { id: 'spoken', label: 'Spoken Languages' },
 ];
 
 const skillsData = [
   // Programming Languages
-  { name: 'Python', category: 'languages', level: 'Advanced' },
+  { name: 'Python', category: 'languages', level: 'Proficient' },
   { name: 'R', category: 'languages', level: 'Proficient' },
-  { name: 'SQL', category: 'languages', level: 'Proficient' },
-  { name: 'C', category: 'languages', level: 'Intermediate' },
+  { name: 'SQL', category: 'languages', level: 'Intermediate' },
+  { name: 'C++', category: 'languages', level: 'Intermediate' },
 
   // Web Tech
-  { name: 'HTML5 & CSS3', category: 'web', level: 'Advanced' },
-  { name: 'JavaScript', category: 'web', level: 'Advanced' },
-  { name: 'React', category: 'web', level: 'Advanced' },
-  { name: 'Tailwind CSS', category: 'web', level: 'Advanced' },
+  { name: 'HTML5 & CSS3', category: 'web', level: 'Intermediate' },
+  { name: 'JavaScript', category: 'web', level: 'Intermediate' },
 
-  // Data Science & Machine Learning
-  { name: 'Machine Learning', category: 'datascience', level: 'Proficient' },
-  { name: 'Data Analysis', category: 'datascience', level: 'Advanced' },
-  { name: 'Statistical Modeling', category: 'datascience', level: 'Proficient' },
+
+  // Statistical Tools
+  { name: 'Regression Analysis', category: 'datascience', level: 'Proficient' },
+  { name: ' Exploratory Data Analysis', category: 'datascience', level: 'Proficient' },
+  { name: 'Linear Programming Modeling', category: 'datascience', level: 'Proficient' },
+  { name: 'Quadratic Programming Modeling', category: 'datascience', level: 'Proficient' },
 
   // Tools & Platforms
-  { name: 'Git & GitHub', category: 'tools', level: 'Advanced' },
-  { name: 'VS Code', category: 'tools', level: 'Advanced' },
+  { name: 'Git & GitHub', category: 'tools', level: 'Proficient' },
+  { name: 'VS Code', category: 'tools', level: 'Proficient' },
   { name: 'Jupyter Notebook', category: 'tools', level: 'Proficient' },
+  { name: 'RStudio', category: 'tools', level: 'Proficient' },
+  { name: 'CodeLite', category: 'tools', level: 'Proficient' },
 
   // Spoken Languages
   { name: 'English', category: 'spoken', level: 'Fluent / Professional' },
   { name: 'Hindi', category: 'spoken', level: 'Native / Bilingual' },
-  { name: 'Odia', category: 'spoken', level: 'Native' },
 ];
 
 export default function Skills() {
