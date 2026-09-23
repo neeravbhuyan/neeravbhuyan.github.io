@@ -36,7 +36,6 @@ export const profile = {
   ],
   languages: [
     "JavaScript",
-    "TypeScript",
     "CSS",
     "Python",
     "R",
@@ -44,6 +43,11 @@ export const profile = {
   skills: [
     "API Integration",
     "Pandas",
+    "NumPy",
+    "Matplotlib",
+    "OpenCV",
+    "Scikit-Learn",
+    "SciPy",
     "dplyr",
     "ggplot2",
     "lattice",
