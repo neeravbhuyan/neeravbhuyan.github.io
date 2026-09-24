@@ -29,6 +29,16 @@ const skillsData = [
     level: 'Proficient',
     libraries: ['dplyr', 'ggplot2', 'lattice'],
   },
+  {
+    name: 'C++',
+    category: 'languages',
+    level: 'Intermediate',
+  },
+  {
+    name: 'SQL',
+    category: 'languages',
+    level: 'Intermediate',
+  },
 
   // Web Tech
   { name: 'HTML5 & CSS3', category: 'web', level: 'Intermediate' },
@@ -45,6 +55,7 @@ const skillsData = [
   { name: 'Git & GitHub', category: 'tools', level: 'Proficient' },
   { name: 'VS Code', category: 'tools', level: 'Proficient' },
   { name: 'Jupyter Notebook', category: 'tools', level: 'Proficient' },
+  { name: 'Spyder', category: 'tools', level: 'Proficient' },
   { name: 'RStudio', category: 'tools', level: 'Proficient' },
   { name: 'CodeLite', category: 'tools', level: 'Proficient' },
 
