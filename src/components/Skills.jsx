@@ -4,7 +4,7 @@ const categories = [
   { id: 'languages', label: 'Programming' },
   { id: 'web', label: 'Web Tech' },
   { id: 'datascience', label: 'Statistical Tools' },
-  { id: 'tools', label: 'Tools' },
+  { id: 'tools', label: 'Environments' },
   { id: 'spoken', label: 'Spoken Languages' },
 ];
 
