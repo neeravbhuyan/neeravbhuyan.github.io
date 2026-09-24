@@ -24,15 +24,15 @@ const skillsData = [
     ],
   },
   {
+    name: 'C++',
+    category: 'languages',
+    level: 'Intermediate',
+  },
+  {
     name: 'R',
     category: 'languages',
     level: 'Proficient',
     libraries: ['dplyr', 'ggplot2', 'lattice'],
-  },
-  {
-    name: 'C++',
-    category: 'languages',
-    level: 'Intermediate',
   },
   {
     name: 'SQL',
