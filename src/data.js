@@ -18,7 +18,7 @@ export const profile = {
       title: "Repository",
       type: "GitHub",
       href: "https://github.com/neeravbhuyan/Billboard-Top-Songs-Analysis"
-        }
+        },
         {
           title: "Report",
           type: "PDF",
@@ -40,7 +40,7 @@ export const profile = {
       title: "Repository",
       type: "GitHub",
       href: "https://github.com/neeravbhuyan/LPG-Allocation-under-Supply-Constraints"
-        }
+        },
       ],
     },
     {
@@ -64,7 +64,7 @@ export const profile = {
       title: "Repository",
       type: "GitHub",
       href: "https://github.com/neeravbhuyan/ghostfaces"
-    }
+    },
   ]
 }
   ],
