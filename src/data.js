@@ -15,6 +15,11 @@ export const profile = {
           href: "/resources/slide deck.html",
         },
         {
+      title: "Repository",
+      type: "GitHub",
+      href: "https://github.com/neeravbhuyan/Billboard-Top-Songs-Analysis"
+        }
+        {
           title: "Report",
           type: "PDF",
           href: "/resources/report.pdf",
@@ -31,6 +36,11 @@ export const profile = {
           type: "PDF",
           href: "/resources/ONM-Project-Report.pdf",
         },
+        {
+      title: "Repository",
+      type: "GitHub",
+      href: "https://github.com/neeravbhuyan/LPG-Allocation-under-Supply-Constraints"
+        }
       ],
     },
     {
