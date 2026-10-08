@@ -33,6 +33,30 @@ export const profile = {
         },
       ],
     },
+    {
+  title: "GhostFaces: Facial Recognition via Eigenfaces & SVM",
+  desc: "An end-to-end facial recognition pipeline designed for unconstrained, high-dimensional datasets. Standardized preprocessing with single-channel grayscale arrays to preserve natural facial contours, applied Mean Centering and Thin SVD to extract 93 Eigenfaces retaining 90% variance, and classified 355 distinct identities using a Degree-2 Polynomial SVM.",
+  tags: [
+    "Computer Vision",
+    "Python",
+    "PCA",
+    "SVM",
+    "Scikit-learn",
+    "Machine Learning"
+  ],
+  resources: [
+    {
+      title: "Report",
+      type: "PDF",
+      href: "/resources/GhostFaces.pdf"
+    },
+    {
+      title: "Repository",
+      type: "GitHub",
+      href: "https://github.com/neeravbhuyan/ghostfaces"
+    }
+  ]
+}
   ],
   languages: [
     "JavaScript",
