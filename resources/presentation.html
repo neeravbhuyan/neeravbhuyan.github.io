@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GhostFaces: Facial Recognition via Eigenfaces & SVM</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  :root {
+    --bg: #030508;
+    --bg2: #0a0e17;
+    --bg3: #111826;
+    --gold: #ffcc33;
+    --gold2: #ffe680;
+    --amber: #ff9900;
+    --teal: #00f2ff;
+    --lavender: #b388ff;
+    --rose: #ff3366;
+    --text: #ffffff;
+    --muted: #b0bec5;
+    --border: rgba(0, 242, 255, 0.25);
+    --code-bg: #000000;
+    --code-border: #00f2ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    user-select: none;
+  }
+
+  #deck { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+  .slide {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    padding: 0; opacity: 0; transform: translateX(60px);
+    pointer-events: none; transition: opacity 0.4s ease, transform 0.4s ease;
+    background: var(--bg); overflow: hidden;
+  }
+
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+  .slide.out { opacity: 0; transform: translateX(-60px); pointer-events: none; }
+
+  /* HEADER BAR */
+  .slide-header {
+    display: flex; align-items: center; gap: 16px; padding: 20px 60px;
+    border-bottom: 2px solid rgba(255,255,255,0.1); background: var(--bg2);
+    z-index: 10; flex-shrink: 0;
+  }
+
+  .section-badge {
+    font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px;
+    border-radius: 4px; border: 2px solid;
+  }
+
+  .badge-intro { color: var(--teal); border-color: var(--teal); background: rgba(0,242,255,0.1); }
+  .badge-phase1 { color: var(--gold); border-color: var(--gold); background: rgba(255,204,51,0.1); }
+  .badge-phase2 { color: var(--amber); border-color: var(--amber); background: rgba(255,153,0,0.1); }
+  .badge-math { color: var(--lavender); border-color: var(--lavender); background: rgba(179,136,255,0.1); }
+  .badge-res { color: var(--rose); border-color: var(--rose); background: rgba(255,51,102,0.1); }
+  .badge-team { color: var(--teal); border-color: var(--teal); background: rgba(0,242,255,0.1); }
+
+  .slide-header-title { font-family: 'DM Mono', monospace; font-size: 16px; color: var(--muted); letter-spacing: 1px; margin-left: auto; }
+
+  /* CONTENT AREA */
+  .slide-body {
+    flex: 1; overflow-y: auto; padding: 36px 60px 100px 60px;
+    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  }
+
+  /* TYPOGRAPHY */
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(44px, 5.5vw, 76px); font-weight: 900; line-height: 1.1; color: var(--text); margin-bottom: 18px; }
+  h1 em { color: var(--teal); font-style: italic; }
+  h2 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 3.8vw, 52px); font-weight: 700; color: var(--text); margin-bottom: 18px; line-height: 1.2; }
+  h3 { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+  p, li { font-size: 20px; line-height: 1.6; color: #e2e8f0; font-weight: 400; margin-bottom: 14px; }
+  strong { color: #ffffff; font-weight: 700; }
+
+  .accent { color: var(--gold); }
+  .accent-teal { color: var(--teal); }
+  .accent-amber { color: var(--amber); }
+  .accent-lav { color: var(--lavender); }
+  .accent-rose { color: var(--rose); }
+
+  /* TITLE SLIDE */
+  .title-sub { font-size: 22px; color: var(--muted); margin-top: 18px; max-width: 860px; }
+  .title-pills { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+  .pill { font-family: 'DM Mono', monospace; font-size: 15px; padding: 8px 20px; border-radius: 100px; background: var(--bg3); border: 2px solid var(--border); color: var(--text); font-weight: bold; }
+  .pill strong { color: var(--teal); }
+
+  /* GRIDS */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 24px; align-items: start; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 24px; }
+
+  /* CODE BLOCK */
+  .code-wrap { background: var(--code-bg); border: 2px solid var(--code-border); border-radius: 10px; overflow: hidden; margin: 16px 0; position: relative; }
+  .code-header { display: flex; align-items: center; gap: 10px; padding: 12px 18px; background: rgba(0, 242, 255, 0.1); border-bottom: 2px solid var(--code-border); }
+  .code-lang { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: bold; color: var(--teal); margin-right: auto; }
+  
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    padding: 5px 14px;
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+  }
+  .copy-btn:hover { background: var(--teal); color: #000; box-shadow: 0 0 10px rgba(0,242,255,0.4); }
+
+  pre { padding: 20px; overflow-x: auto; font-family: 'DM Mono', monospace; font-size: 15px; line-height: 1.55; color: #c9d1d9; margin: 0; }
+  .kw { color: #ff79c6; font-weight: bold; }
+  .fn { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .cm { color: #6272a4; font-style: italic; }
+
+  /* BOXES */
+  .finding-card { background: var(--bg3); border: 2px solid var(--border); border-radius: 10px; padding: 20px 26px; margin: 14px 0; display: flex; gap: 18px; align-items: flex-start; }
+  .finding-icon { font-size: 28px; flex-shrink: 0; }
+  .finding-text { font-size: 18px; line-height: 1.6; color: #e2e8f0; }
+  .rq-box { background: rgba(0, 242, 255, 0.05); border: 2px solid var(--teal); border-radius: 14px; padding: 26px 34px; margin: 20px 0; }
+  .rq-text { font-family: 'Playfair Display', serif; font-size: 24px; font-style: italic; color: var(--text); line-height: 1.5; }
+  .highlight-box { background: rgba(255, 204, 51, 0.05); border: 2px solid var(--gold); border-radius: 10px; padding: 20px 28px; margin: 16px 0; }
+  .highlight-box p { font-size: 18px; margin: 0; }
+  .alert-box { background: rgba(255, 51, 102, 0.07); border: 2px solid var(--rose); border-radius: 10px; padding: 20px 28px; margin: 16px 0; }
+  .alert-box p { font-size: 18px; margin: 0; }
+
+  /* GITHUB & TEAM */
+  .github-banner { background: rgba(0, 242, 255, 0.08); border: 2px solid var(--teal); border-radius: 12px; padding: 28px; text-align: center; margin-bottom: 30px; }
+  .github-link { text-decoration: none; display: inline-block; cursor: pointer; }
+  .github-link h2 { margin-bottom: 8px; font-family: 'DM Mono', monospace; color: var(--teal); transition: color 0.2s ease, text-shadow 0.2s ease; }
+  .github-link:hover h2 { color: var(--gold); text-shadow: 0 0 15px rgba(255,204,51,0.5); }
+  .github-banner p { font-size: 19px; color: var(--text); margin: 0; }
+  
+  .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .team-member { background: var(--bg2); border: 2px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; transition: transform 0.2s ease; cursor: pointer;}
+  .team-member:hover { transform: translateY(-4px); border-color: var(--teal); }
+  .team-member .name { font-size: 24px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .team-member .role { font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .team-member .email {
+    font-size: 14px;
+    color: var(--teal);
+    font-family: 'DM Mono', monospace;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .team-member.show-email { 
+    border-color: var(--teal); 
+    background: rgba(0, 242, 255, 0.05); 
+  }
+  .team-member.show-email .email { 
+    max-height: 40px; 
+    opacity: 1; 
+    margin-top: 12px; 
+  }
+
+  /* PLOTS & TABLES */
+  .plot-wrap { background: var(--bg2); border: 2px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin: 20px 0; }
+  .plot-title-bar { padding: 12px 20px; background: rgba(255,255,255,0.05); border-bottom: 2px solid rgba(255,255,255,0.1); font-family: 'DM Mono', monospace; font-size: 14px; color: var(--muted); }
+  
+  .schema-table, .var-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+  .schema-table th, .var-table th { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--teal); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--teal); }
+  .schema-table td, .var-table td { font-size: 16px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+  /* NAV */
+  #nav { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 20px; background: rgba(10, 14, 23, 0.95); border: 2px solid var(--border); border-radius: 100px; padding: 10px 28px; z-index: 100; }
+  .nav-btn { background: none; border: 2px solid var(--muted); color: var(--text); width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 18px; transition: 0.2s; }
+  .nav-btn:hover:not(:disabled) { border-color: var(--teal); color: var(--teal); background: rgba(0,242,255,0.1); }
+  #slide-counter { font-family: 'DM Mono', monospace; font-size: 16px; }
+  #slide-counter span { color: var(--teal); font-weight: bold; }
+  #progress-bar { position: fixed; top: 0; left: 0; height: 5px; background: linear-gradient(90deg, var(--teal), var(--gold), var(--rose)); transition: 0.4s; z-index: 200; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="deck"></div>
+
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()">&#8592;</button>
+  <div id="slide-counter"><span id="cur">1</span> / <span id="tot"></span></div>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">&#8594;</button>
+</div>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    const originalText = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.background = 'var(--teal)';
+    btn.style.color = '#000';
+    btn.style.borderColor = 'var(--teal)';
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  }).catch(err => console.error(err));
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  SLIDE DEFINITIONS (BEGINNER FRIENDLY & MATHJAX ESCAPED)
+// ══════════════════════════════════════════════════════════════════
+
+const slides = [
+
+// ─── 0: TITLE ───
+{html: `
+<div class="slide-body" style="display:flex;flex-direction:column;justify-content:center;">
+  <h3>Indian Statistical Institute · Project Presentation</h3>
+  <h1>GhostFaces: <em>Facial Recognition via Eigenfaces & SVM</em></h1>
+  <p class="title-sub">A step-by-step journey from a simple 50-image test to a robust, math-based recognition pipeline handling thousands of messy, real-world photos.</p>
+  <div class="title-pills">
+    <div class="pill"><strong>10,304</strong> Pixels per Image</div>
+    <div class="pill"><strong>93</strong> Core Features Kept</div>
+    <div class="pill"><strong>Thin SVD</strong> Direct Math Shortcut</div>
+    <div class="pill"><strong>355</strong> People Identified</div>
+    <div class="pill"><strong>28.04%</strong> Final Accuracy</div>
+  </div>
+</div>
+`, badge:'badge-intro', section:'Overview', title:'Title Slide'},
+
+// ─── 1: THE CORE PROBLEM ───
+{html: `
+<div class="slide-body">
+  <h3>Problem Formulation</h3>
+  <h2>The Problem: Too Many Pixels!</h2>
+  <p>Recognizing human faces directly from raw pixels is incredibly slow and difficult for a computer.</p>
+  
+  <div class="two-col">
+    <div>
+      <div class="highlight-box">
+        <p><strong>Huge Data Size:</strong> A standard face image of 112 by 92 pixels creates a massive list of numbers:</p>
+        <p style="text-align:center;color:var(--teal);margin-top:16px;font-size:26px;">$$D = 112 \\times 92 = 10{,}304 \\text{ pixels}$$</p>
+      </div>
+      <p style="margin-top:16px;">Comparing images using 10,304 numbers takes up too much memory. It also confuses the computer because minor details (like shadows) overpower the important facial features.</p>
+    </div>
+    <div>
+      <div class="finding-card">
+        <div class="finding-icon">💡</div>
+        <div class="finding-text"><strong>Lighting vs. Identity:</strong> Raw pixels are easily fooled. A photo of you in a dark room might look mathematically closer to a stranger in a dark room than to a photo of you in the sun.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">📉</div>
+        <div class="finding-text"><strong>The Solution (Eigenfaces):</strong> Faces have a much simpler hidden structure. By finding the core visual patterns that vary the most across all faces (called <strong>Eigenfaces</strong>), we can shrink the data from thousands of pixels down to just a few dozen numbers.</div>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-intro', section:'Motivation', title:'Curse of Dimensionality'},
+
+// ─── 2: PRELIMINARY EXPERIMENT (TOY 50-IMAGE MODEL) ───
+{html: `
+<div class="slide-body">
+  <h3>Phase 1 · Baseline Prototype</h3>
+  <h2>The 50-Image Toy Model & The "100% Accuracy" Trap</h2>
+  <p>We started by building a basic prototype using a tiny, perfect dataset: <strong>50 grayscale face images</strong> across 10 distinct people.</p>
+  
+  <div class="two-col">
+    <div>
+      <table class="var-table">
+        <thead><tr><th>Setup</th><th>Prototype Value</th><th>Result/Observation</th></tr></thead>
+        <tbody>
+          <tr><td>Dataset Scope</td><td>50 images (40 train / 10 test)</td><td>10 people total</td></tr>
+          <tr><td>Image Resolution</td><td>112 x 92 (Grayscale)</td><td>Vector length = 10,304</td></tr>
+          <tr><td>Math Used</td><td>Thin SVD</td><td>Extracts features directly</td></tr>
+          <tr><td>Features Kept</td><td>7 Eigenfaces</td><td>Kept 90% of the visual info</td></tr>
+          <tr><td>Classifier</td><td>Linear SVM</td><td><strong>100.00% Accuracy</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="alert-box">
+        <p><strong>Why 100% Accuracy was Misleading:</strong><br><br>
+        1. <strong>Perfect Lab Photos:</strong> Clean backgrounds, perfectly centered faces, and identical lighting.<br>
+        2. <strong>Few People to Guess From:</strong> Only 10 identities to separate.<br>
+        3. <strong>Data Memorization:</strong> When you only have 10 people and perfect lighting, simple math easily separates the 7 features. It gave us a false sense of success before hitting the real world.</p>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-phase1', section:'Phase 1: Prototype', title:'The Toy Model'},
+
+// ─── 3: CODE FOR PROTOTYPE ───
+{html: `
+<div class="slide-body">
+  <h3>Phase 1 · Implementation</h3>
+  <h2>How the 50-Image Model Worked</h2>
+  <p>This early code loaded 50 images, found the "average face", extracted the 7 most important visual patterns, and predicted the test faces perfectly.</p>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <span class="code-lang">Python · Prototype Code (grayfaces)</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="cm"># 1. Find the average face and center the data</span>
+global_mean_face = np.mean(X_train, axis=0)
+X_train_centered = X_train - global_mean_face
+
+<span class="cm"># 2. Extract the features directly (Thin SVD)</span>
+A = X_train_centered.T
+U, S, Vt = svd(A, full_matrices=False)
+
+<span class="cm"># 3. Keep only the most important features (90% of the information)</span>
+explained_variance_ratio = (S ** 2) / np.sum(S ** 2)
+cumulative_variance = np.cumsum(explained_variance_ratio)
+M_prime = np.searchsorted(cumulative_variance, 0.90) + 1  <span class="cm"># Output: 7 Eigenfaces</span>
+eigenfaces = U[:, :M_prime]
+
+<span class="cm"># 4. Convert images to small number lists & Classify</span>
+omega_train = X_train_centered @ eigenfaces
+omega_test = (X_test - global_mean_face) @ eigenfaces
+clf = SVC(kernel='linear')
+clf.fit(omega_train, y_train)
+<span class="cm"># Result: 10/10 test predictions correct (100%)</span></pre>
+  </div>
+</div>
+`, badge:'badge-phase1', section:'Phase 1: Prototype', title:'Prototype Code'},
+
+// ─── 4: SCALING TO THE FULL DATASET & EARLY FAILURES ───
+{html: `
+<div class="slide-body">
+  <h3>Phase 2 · Scaling Up</h3>
+  <h2>Real-World Reality Check: Scaling to 6,000 Images</h2>
+  <p>When we moved from 50 perfect images to our massive, messy dataset (<strong>6,053 images of 1,434 different people</strong>), the model completely collapsed, getting only <strong>10.40% right</strong>.</p>
+  
+  <div class="two-col">
+    <div>
+      <div class="alert-box">
+        <p><strong>Failure 1: The Single-Photo Problem</strong><br>
+        Hundreds of people in the dataset only had 1 or 2 photos. If someone's only photo ended up in the testing set, the model had <em>never seen them before</em> during training. It was mathematically impossible to guess correctly.</p>
+      </div>
+      <div class="alert-box" style="margin-top:14px;">
+        <p><strong>Failure 2: The Infrared Color Problem</strong><br>
+        We tried turning the images into cool-looking thermal/infrared heatmaps to boost contrast. But when converting them back to readable data, it destroyed subtle shadows around the nose and eyes, ruining the facial structure.</p>
+      </div>
+    </div>
+    <div>
+      <div class="alert-box">
+        <p><strong>Failure 3: Unequal Feature Weights</strong><br>
+        The first 2 or 3 extracted features contained huge, overpowering numbers, while the remaining 89 features had tiny numbers. The model ignored the tiny details completely, acting as if they didn't exist.</p>
+      </div>
+      <div class="highlight-box" style="margin-top:14px;">
+        <p><strong>Diagnosis:</strong> The model didn't need more features; it needed better data cleaning, balanced numbers, and a smarter way to handle single photos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-phase2', section:'Phase 2: Diagnosis', title:'Initial Scaling Failures'},
+
+// ─── 5: DATA PIPELINE ARCHITECTURE ───
+{html: `
+<div class="slide-body">
+  <h3>Phase 2 · Refinement</h3>
+  <h2>Fixing the Data Pipeline</h2>
+  <p>To solve these bottlenecks, we rebuilt the data process to load images directly from the web, strictly filter out people with too few photos, and read images in pure grayscale.</p>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <span class="code-lang">Python · Memory Loading & Filtering Pipeline</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="cm"># 1. Pure Grayscale Decoding (No Infrared Damage)</span>
+img_color = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+img_resized = cv2.resize(img_color, (92, 112))
+img_gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
+image_vectors.append(img_gray.flatten())  <span class="cm"># Vector length: 10,304</span>
+
+<span class="cm"># 2. Filter out people with fewer than 5 photos</span>
+MIN_SAMPLES = 5
+unique_labels, counts = np.unique(y_raw, return_counts=True)
+valid_labels = unique_labels[counts >= MIN_SAMPLES]
+valid_mask = np.isin(y_raw, valid_labels)
+
+X, y = X_raw[valid_mask], y_raw[valid_mask]
+<span class="cm"># Filtered: 3,332 images across 355 people (down from 6,053 images)</span>
+
+<span class="cm"># 3. Train-Test Split (Guarantees every test person is in the training set)</span>
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42, stratify=y
+) <span class="cm"># Training: 2,665 samples | Testing: 667 samples</span></pre>
+  </div>
+</div>
+`, badge:'badge-phase2', section:'Phase 2: Engineering', title:'Pipeline Architecture'},
+
+// ─── 6: MATHEMATICAL FORMULATION: SVD VS COVARIANCE ───
+{html: `
+<div class="slide-body">
+  <h3>Mathematical Foundation</h3>
+  <h2>The Shortcut: Direct SVD vs. The Old Way</h2>
+  <p>To find the Eigenfaces, we need to extract the core patterns from a massive grid of data. How do we do this without crashing the computer?</p>
+  
+  <div class="two-col">
+    <div>
+      <div class="rq-box">
+        <div class="rq-text">The Old Way (Covariance Matrix):</div>
+        <p style="margin-top:12px;font-size:17px;">The traditional method creates a massive grid comparing every single pixel to every other pixel ($10{,}304 \\times 10{,}304$). This creates a matrix with over 100 million entries!</p>
+        <p style="margin-top:12px;font-size:17px;">Calculating this requires trillions of operations, which easily crashes normal computers. Even traditional shortcuts create massive rounding errors that wipe out the smaller, finer facial details.</p>
+      </div>
+    </div>
+    <div>
+      <div class="highlight-box">
+        <p><strong>The Solution (Thin SVD):</strong><br>
+        Instead of building a massive comparison grid, we use a direct mathematical shortcut called Thin SVD to break the data down directly:</p>
+        <p style="text-align:center;color:var(--teal);margin-top:16px;font-size:26px;">$$A = U \\Sigma V^T$$</p>
+        <p style="margin-top:14px;font-size:17px;">• $U$ gives us the <strong>Eigenfaces</strong>.<br>
+        • $\\Sigma$ tells us how important each face pattern is.<br>
+        • This breaks the data down in a single pass without building huge intermediate matrices, saving time and preventing rounding errors.</p>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-math', section:'Mathematics', title:'Thin SVD Theory'},
+
+// ─── 7: SUBSPACE TRUNCATION & VARIANCE ───
+{html: `
+<div class="slide-body">
+  <h3>Mathematical Foundation</h3>
+  <h2>Shrinking the Data & Balancing the Features</h2>
+  <p>Instead of keeping all the information (including background noise), we only keep the top features that capture 90% of what makes the faces different.</p>
+  
+  <div class="two-col">
+    <div>
+      <div class="highlight-box">
+        <p><strong>Keeping the Best Features:</strong> We pick the top 93 most important Eigenfaces that make up 90% of the dataset's total variance.</p>
+        <p style="text-align:center;color:var(--gold);margin-top:16px;font-size:24px;">$$M' = 93$$</p>
+      </div>
+      <p style="margin-top:14px;">This shrinks the face images from <strong>10,304 pixels down to just a tiny list of 93 numbers</strong>—a 99% reduction in size!</p>
+    </div>
+    <div>
+      <div class="finding-card">
+        <div class="finding-icon">📐</div>
+        <div class="finding-text"><strong>Projecting the Faces:</strong> Every face is compared against these 93 core patterns to get a final, short list of 93 "weights" describing the face.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">⚖️</div>
+        <div class="finding-text"><strong>Balancing the Features:</strong> To fix the "Unequal Weights" problem, we balance the features using Z-score standardization so that no single feature overpowers the rest. Now, the 93rd detail is just as loud as the 1st.</div>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-math', section:'Mathematics', title:'Data Shrinking'},
+
+// ─── 8: THE MULTI-CLASS SVM CLASSIFIER ───
+{html: `
+<div class="slide-body">
+  <h3>Classification Strategy</h3>
+  <h2>Identifying the Faces with Polynomial SVM</h2>
+  <p>Once we've shrunk the faces down to 93 balanced numbers, we use an algorithm called a Support Vector Machine (SVM) to learn which numbers belong to which person.</p>
+  
+  <div class="two-col">
+    <div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-lang">Python · Training the AI</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="cm"># Balance the 93 extracted features</span>
+scaler = StandardScaler()
+omega_train = scaler.fit_transform(W_train)
+omega_test  = scaler.transform(W_test)
+
+<span class="cm"># Train the Polynomial SVM to recognize faces</span>
+svm_classifier = SVC(
+    kernel="poly", 
+    degree=2, 
+    coef0=1.0, 
+    random_state=42
+)
+svm_classifier.fit(omega_train, y_train)
+
+<span class="cm"># Predict the identities of the 667 test faces</span>
+y_pred = svm_classifier.predict(omega_test)</pre>
+      </div>
+    </div>
+    <div>
+      <div class="finding-card">
+        <div class="finding-icon">🧠</div>
+        <div class="finding-text"><strong>Why use a "Polynomial Kernel"?</strong> If someone tilts their head or smiles, their numbers change in curved patterns. A simple straight line can't separate the people properly. The Polynomial tool (degree 2) allows the algorithm to understand the complex, curved differences between faces without memorizing the noise.</div>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-math', section:'Classification', title:'SVM Setup'},
+
+// ─── 9: PERFORMANCE PROGRESSION (PLOTLY) ───
+{html: `
+<div class="slide-body">
+  <h3>Empirical Results</h3>
+  <h2>The Step-by-Step Accuracy Journey</h2>
+  <p>By identifying and fixing each problem one by one, we raised the model's accuracy from a broken 10.40% up to a final 28.04% across 355 different people.</p>
+  
+  <div class="plot-wrap">
+    <div class="plot-title-bar" style="color:var(--teal);">📈 Model Accuracy Improvements</div>
+    <div id="plot-progression" style="height:360px; width:100%;"></div>
+  </div>
+</div>
+`, badge:'badge-res', section:'Results (1/3)', title:'Progression Curve',
+onRender: function() {
+  const trace = {
+    x: ['1. Broken Baseline', '2. Added More Features', '3. Balanced the Features', '4. Removed Single Photos', '5. Fixed Infrared + Final Poly SVM'],
+    y: [10.40, 10.40, 13.00, 24.00, 28.04],
+    type: 'scatter',
+    mode: 'lines+markers+text',
+    text: ['10.40%', '10.40%', '13.00%', '24.00%', '28.04%'],
+    textposition: 'top center',
+    line: { color: '#00f2ff', width: 4 },
+    marker: { size: 12, color: '#ffcc33' }
+  };
+  Plotly.newPlot('plot-progression', [trace], {
+    paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+    font: {color: '#b0bec5', family: 'DM Mono', size: 13},
+    xaxis: {gridcolor:'rgba(255,255,255,0.1)'},
+    yaxis: {title: 'Accuracy (%)', range: [5, 32], gridcolor:'rgba(255,255,255,0.1)'},
+    margin:{l:60,r:40,t:20,b:60}
+  }, {displayModeBar: false});
+}},
+
+// ─── 10: METRIC EVALUATION & INTERPRETATION ───
+{html: `
+<div class="slide-body">
+  <h3>Empirical Results</h3>
+  <h2>Final Results for 355 People</h2>
+  <p>Here are the final performance numbers evaluated on the 667 unseen test photos.</p>
+  
+  <div class="two-col">
+    <div>
+      <table class="var-table">
+        <thead><tr><th>Metric Type</th><th>Precision</th><th>Recall</th><th>F1-Score</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Macro Average</strong></td><td>0.1753</td><td>0.1822</td><td>0.1687</td></tr>
+          <tr><td><strong>Weighted Average</strong></td><td>0.2382</td><td>0.2804</td><td>0.2395</td></tr>
+          <tr><td><strong>Final Accuracy</strong></td><td colspan="3" style="text-align:center;color:var(--teal);font-weight:bold;font-size:20px;">28.04%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="finding-card">
+        <div class="finding-icon">🎯</div>
+        <div class="finding-text"><strong>Is 28% actually good?</strong><br><br>
+        Yes! If you were to randomly guess a person's name out of 355 choices, you would only be right <strong>0.28%</strong> of the time. <br><br>
+        By shrinking the photos down to just 93 numbers, our math-based model is predicting correctly at <strong>100 times better than random guessing</strong> on messy, unposed photos!</div>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-res', section:'Results (2/3)', title:'Metrics & Benchmarks'},
+
+// ─── 11: DRAWBACKS & THE EIGENFACE CEILING ───
+{html: `
+<div class="slide-body">
+  <h3>Critical Analysis</h3>
+  <h2>Why didn't we get 90%? The Flaws of the Math</h2>
+  <p>Why does this method get stuck around 28%? The underlying math has a few fundamental flaws when dealing with real-world photos.</p>
+  
+  <div class="two-col">
+    <div>
+      <div class="alert-box">
+        <p><strong>1. Faces Must Be Perfectly Lined Up:</strong><br>
+        This math assumes pixels match perfectly. If a person tilts their head slightly, their eyes shift a few pixels over. The algorithm doesn't realize it's still an eye—it just sees changes in numbers and gets confused.</p>
+      </div>
+      <div class="alert-box" style="margin-top:14px;">
+        <p><strong>2. Lighting Overpowers the Face:</strong><br>
+        The algorithm looks for the biggest changes in the data. Because shadows from a bright window cause bigger pixel changes than a different nose shape, the algorithm accidentally focuses on the room lighting instead of the person's identity.</p>
+      </div>
+    </div>
+    <div>
+      <div class="alert-box">
+        <p><strong>3. Straight Lines vs. Curved Reality:</strong><br>
+        As humans rotate their heads, the pixel changes create complex, curved patterns. This simple math tries to draw straight lines to separate people, which inevitably causes different people's faces to overlap in the data.</p>
+      </div>
+      <div class="highlight-box" style="margin-top:14px;">
+        <p><strong>4. Blind to Labels:</strong><br>
+        When shrinking the data, the algorithm doesn't actually know <em>who</em> is in the picture. It just shrinks everything blindly, instead of actively finding what makes each person unique.</p>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-res', section:'Results (3/3)', title:'Theoretical Drawbacks'},
+
+// ─── 12: CONCLUSION & FUTURE WORK ───
+{html: `
+<div class="slide-body">
+  <h3>Project Synthesis</h3>
+  <h2>Key Takeaways & Next Steps</h2>
+  
+  <div class="two-col">
+    <div>
+      <div class="finding-card" style="border-color:var(--teal);">
+        <div class="finding-icon">01</div>
+        <div class="finding-text"><strong>Direct Math is Better:</strong> Directly breaking down the data matrix using SVD skips massive, computer-crashing steps and prevents rounding errors.</div>
+      </div>
+      <div class="finding-card" style="border-color:var(--gold);">
+        <div class="finding-icon">02</div>
+        <div class="finding-text"><strong>Data Cleaning is King:</strong> Bypassing the bad infrared colors, removing the 1-photo identities, and balancing the features lifted the accuracy from 10.4% to 28.04%.</div>
+      </div>
+    </div>
+    <div>
+      <div class="finding-card" style="border-color:var(--lavender);">
+        <div class="finding-icon">03</div>
+        <div class="finding-text"><strong>Simple Math Has Limits:</strong> Shrinking an image by 99% is amazing and beats random chance by 100x, but this simple method can't handle head tilts or bad lighting.</div>
+      </div>
+      <div class="finding-card" style="border-color:var(--rose);">
+        <div class="finding-icon">04</div>
+        <div class="finding-text"><strong>The Path Forward:</strong> To reach 99% accuracy, we need AI that aligns the eyes automatically, uses advanced lighting correction, and uses Deep Learning to ignore head rotations.</div>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-intro', section:'Conclusion', title:'Takeaways & Future Work'},
+
+// ─── 13: GITHUB & TEAM ───
+{html: `
+<div class="slide-body">
+  <h3>Access & Collaboration</h3>
+  <h2>Project Code & Research Team</h2>
+  
+  <div class="github-banner">
+    <a href="https://github.com/neeravbhuyan/ghostfaces" target="_blank" class="github-link">
+      <h2>&lt;Project GitHub Repository: ghostfaces&gt;</h2>
+    </a>
+    <p>All Jupyter Notebooks, SVD scripts, preprocessing pipelines, and documentation are open-source and easy to reproduce.</p>
+  </div>
+
+  <h3 style="margin-top: 36px; color:var(--text);">Research Authors (Indian Statistical Institute)</h3>
+  <div class="team-grid">
+    <div class="team-member" onclick="this.classList.toggle('show-email')">
+      <div class="name">Neerav Bhuyan</div>
+      <div class="role">Data Engineering, Pipeline Architecture & Machine Learning</div>
+      <div class="email">neeravbhuyan@gmail.com</div>
+    </div>
+    <div class="team-member" onclick="this.classList.toggle('show-email')">
+      <div class="name">Saptarshi Datta</div>
+      <div class="role">Mathematical Modeling, Evaluation & Reporting</div>
+      <div class="email">saptarshidatta28@gmail.com</div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-team', section:'Resources', title:'Team & Code'}
+
+];
+
+// ══════════════════════════════════════════════════════════════════
+//  DECK CONTROLLER ENGINE
+// ══════════════════════════════════════════════════════════════════
+let current = 0;
+const total = slides.length;
+const deck = document.getElementById('deck');
+const curEl = document.getElementById('cur');
+const totEl = document.getElementById('tot');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progress = document.getElementById('progress-bar');
+
+totEl.textContent = total;
+
+slides.forEach((s, i) => {
+  const el = document.createElement('div');
+  el.className = 'slide' + (i === 0 ? ' active' : '');
+  el.id = `slide-${i}`;
+  el.innerHTML = `
+    <div class="slide-header">
+      <div class="section-badge ${s.badge}">${s.section}</div>
+      <div class="slide-header-title">${s.title}</div>
+    </div>
+    ${s.html}
+  `;
+  deck.appendChild(el);
+});
+
+function updateNav() {
+  curEl.textContent = current + 1;
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current === total - 1;
+  progress.style.width = ((current + 1) / total * 100) + '%';
+}
+
+function goTo(idx) {
+  if (idx < 0 || idx >= total || idx === current) return;
+  document.getElementById(`slide-${current}`).className = 'slide out';
+  document.getElementById(`slide-${idx}`).className = 'slide active';
+  current = idx;
+  updateNav();
+  if (slides[current].onRender) {
+    setTimeout(() => slides[current].onRender(), 60);
+  }
+}
+
+function nextSlide() { goTo(current + 1); }
+function prevSlide() { goTo(current - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+});
+
+updateNav();
+if (slides[0].onRender) slides[0].onRender();
+</script>
+</body>
+</html>
