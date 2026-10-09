@@ -61,6 +61,11 @@ export const profile = {
       href: "/resources/GhostFaces.pdf"
     },
     {
+      title: "Slide Deck",
+      type: "HTML",
+      href: "/resources/presentation.html"
+    },
+    {
       title: "Repository",
       type: "GitHub",
       href: "https://github.com/neeravbhuyan/ghostfaces"
