@@ -230,10 +230,10 @@ const slides = [
   <p class="title-sub">A step-by-step journey from a simple 50-image test to a robust, math-based recognition pipeline handling thousands of messy, real-world photos.</p>
   <div class="title-pills">
     <div class="pill"><strong>10,304</strong> Pixels per Image</div>
-    <div class="pill"><strong>93</strong> Core Features Kept</div>
     <div class="pill"><strong>Thin SVD</strong> Direct Math Shortcut</div>
-    <div class="pill"><strong>355</strong> People Identified</div>
-    <div class="pill"><strong>28.04%</strong> Final Accuracy</div>
+    <div class="pill"><strong>Core Features</strong> Kept</div>
+    <div class="pill"><strong>Singular Vector Machine</strong></div>
+    <div class="pill"><strong>Toy Model</strong> to <strong>Real World Dataset</strong></div>
   </div>
 </div>
 `, badge:'badge-intro', section:'Overview', title:'Title Slide'},
@@ -266,6 +266,34 @@ const slides = [
   </div>
 </div>
 `, badge:'badge-intro', section:'Motivation', title:'Curse of Dimensionality'},
+// ─── 6: MATHEMATICAL FORMULATION: SVD VS COVARIANCE ───
+{html: `
+<div class="slide-body">
+  <h3>Mathematical Foundation</h3>
+  <h2>The Shortcut: Direct SVD vs. The Old Way</h2>
+  <p>To find the Eigenfaces, we need to extract the core patterns from a massive grid of data. How do we do this without crashing the computer?</p>
+  
+  <div class="two-col">
+    <div>
+      <div class="rq-box">
+        <div class="rq-text">The Old Way (Covariance Matrix):</div>
+        <p style="margin-top:12px;font-size:17px;">The traditional method creates a massive grid comparing every single pixel to every other pixel <p>(10,304 × 10,304).</p>. This creates a matrix with over 100 million entries!</p>
+        <p style="margin-top:12px;font-size:17px;">Calculating this requires trillions of operations, which easily crashes normal computers. Even traditional shortcuts create massive rounding errors that wipe out the smaller, finer facial details.</p>
+      </div>
+    </div>
+    <div>
+      <div class="highlight-box">
+        <p><strong>The Solution (Thin SVD):</strong><br>
+        Instead of building a massive comparison grid, we use a direct mathematical shortcut called Thin SVD to break the data down directly:</p>
+        <p style="text-align:center;color:var(--teal);margin-top:16px;font-size:26px;">$$A = U \\Sigma V^T$$</p>
+        <p style="margin-top:14px;font-size:17px;">• <em>U</em> gives us the <strong>Eigenfaces</strong>.<br>
+        • &Sigma; tells us how important each face pattern is.<br>
+        • This breaks the data down in a single pass without building huge intermediate matrices, saving time and preventing rounding errors.</p>
+      </div>
+    </div>
+  </div>
+</div>
+`, badge:'badge-math', section:'Mathematics', title:'Thin SVD Theory'},
 
 // ─── 2: PRELIMINARY EXPERIMENT (TOY 50-IMAGE MODEL) ───
 {html: `
@@ -349,13 +377,13 @@ clf.fit(omega_train, y_train)
         Hundreds of people in the dataset only had 1 or 2 photos. If someone's only photo ended up in the testing set, the model had <em>never seen them before</em> during training. It was mathematically impossible to guess correctly.</p>
       </div>
       <div class="alert-box" style="margin-top:14px;">
-        <p><strong>Failure 2: The Infrared Color Problem</strong><br>
-        We tried turning the images into cool-looking thermal/infrared heatmaps to boost contrast. But when converting them back to readable data, it destroyed subtle shadows around the nose and eyes, ruining the facial structure.</p>
+        <p><strong>Failure 3: linear kernel problem</strong><br>
+        The linear kernel failed to capture the non-linear relationships in the data. The linear decision boundary was insufficient to capture the underlying patterns in the dataset, leading to poor classification performance.</p>
       </div>
     </div>
     <div>
       <div class="alert-box">
-        <p><strong>Failure 3: Unequal Feature Weights</strong><br>
+        <p><strong>Failure 2: Unequal Feature Weights</strong><br>
         The first 2 or 3 extracted features contained huge, overpowering numbers, while the remaining 89 features had tiny numbers. The model ignored the tiny details completely, acting as if they didn't exist.</p>
       </div>
       <div class="highlight-box" style="margin-top:14px;">
@@ -365,70 +393,6 @@ clf.fit(omega_train, y_train)
   </div>
 </div>
 `, badge:'badge-phase2', section:'Phase 2: Diagnosis', title:'Initial Scaling Failures'},
-
-// ─── 5: DATA PIPELINE ARCHITECTURE ───
-{html: `
-<div class="slide-body">
-  <h3>Phase 2 · Refinement</h3>
-  <h2>Fixing the Data Pipeline</h2>
-  <p>To solve these bottlenecks, we rebuilt the data process to load images directly from the web, strictly filter out people with too few photos, and read images in pure grayscale.</p>
-
-  <div class="code-wrap">
-    <div class="code-header">
-      <span class="code-lang">Python · Memory Loading & Filtering Pipeline</span>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <pre><span class="cm"># 1. Pure Grayscale Decoding (No Infrared Damage)</span>
-img_color = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-img_resized = cv2.resize(img_color, (92, 112))
-img_gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
-image_vectors.append(img_gray.flatten())  <span class="cm"># Vector length: 10,304</span>
-
-<span class="cm"># 2. Filter out people with fewer than 5 photos</span>
-MIN_SAMPLES = 5
-unique_labels, counts = np.unique(y_raw, return_counts=True)
-valid_labels = unique_labels[counts >= MIN_SAMPLES]
-valid_mask = np.isin(y_raw, valid_labels)
-
-X, y = X_raw[valid_mask], y_raw[valid_mask]
-<span class="cm"># Filtered: 3,332 images across 355 people (down from 6,053 images)</span>
-
-<span class="cm"># 3. Train-Test Split (Guarantees every test person is in the training set)</span>
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.20, random_state=42, stratify=y
-) <span class="cm"># Training: 2,665 samples | Testing: 667 samples</span></pre>
-  </div>
-</div>
-`, badge:'badge-phase2', section:'Phase 2: Engineering', title:'Pipeline Architecture'},
-
-// ─── 6: MATHEMATICAL FORMULATION: SVD VS COVARIANCE ───
-{html: `
-<div class="slide-body">
-  <h3>Mathematical Foundation</h3>
-  <h2>The Shortcut: Direct SVD vs. The Old Way</h2>
-  <p>To find the Eigenfaces, we need to extract the core patterns from a massive grid of data. How do we do this without crashing the computer?</p>
-  
-  <div class="two-col">
-    <div>
-      <div class="rq-box">
-        <div class="rq-text">The Old Way (Covariance Matrix):</div>
-        <p style="margin-top:12px;font-size:17px;">The traditional method creates a massive grid comparing every single pixel to every other pixel ($10{,}304 \\times 10{,}304$). This creates a matrix with over 100 million entries!</p>
-        <p style="margin-top:12px;font-size:17px;">Calculating this requires trillions of operations, which easily crashes normal computers. Even traditional shortcuts create massive rounding errors that wipe out the smaller, finer facial details.</p>
-      </div>
-    </div>
-    <div>
-      <div class="highlight-box">
-        <p><strong>The Solution (Thin SVD):</strong><br>
-        Instead of building a massive comparison grid, we use a direct mathematical shortcut called Thin SVD to break the data down directly:</p>
-        <p style="text-align:center;color:var(--teal);margin-top:16px;font-size:26px;">$$A = U \\Sigma V^T$$</p>
-        <p style="margin-top:14px;font-size:17px;">• $U$ gives us the <strong>Eigenfaces</strong>.<br>
-        • $\\Sigma$ tells us how important each face pattern is.<br>
-        • This breaks the data down in a single pass without building huge intermediate matrices, saving time and preventing rounding errors.</p>
-      </div>
-    </div>
-  </div>
-</div>
-`, badge:'badge-math', section:'Mathematics', title:'Thin SVD Theory'},
 
 // ─── 7: SUBSPACE TRUNCATION & VARIANCE ───
 {html: `
@@ -458,6 +422,56 @@ X_train, X_test, y_train, y_test = train_test_split(
   </div>
 </div>
 `, badge:'badge-math', section:'Mathematics', title:'Data Shrinking'},
+
+// ─── 5: DATA PIPELINE ARCHITECTURE (UPDATED 2-COLUMN) ───
+{html: `
+<div class="slide-body">
+  <h3>Phase 2 · Refinement</h3>
+  <h2>Fixing the Data Pipeline & Classification</h2>
+  <p>To solve these bottlenecks, we rebuilt the data process to strictly filter out people with too few photos, then accurately projected and classified them.</p>
+
+  <div class="two-col">
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-lang">Python · Memory Loading & Filtering</span>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <pre><span class="cm"># 1. Filter out people with fewer than 5 photos</span>
+MIN_SAMPLES = 5
+unique_labels, counts = np.unique(y_raw, return_counts=True)
+valid_labels = unique_labels[counts >= MIN_SAMPLES]
+valid_mask = np.isin(y_raw, valid_labels)
+
+X, y = X_raw[valid_mask], y_raw[valid_mask]
+
+<span class="cm"># 2. Train-Test Split (Guarantees test coverage)</span>
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42, stratify=y
+)</pre>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-lang">Python · Subspace Projection & SVM</span>
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      </div>
+      <pre><span class="cm"># 3. Subspace Projection</span>
+W_train = X_train_centered @ eigenfaces
+W_test = X_test_centered @ eigenfaces
+
+scaler = StandardScaler()
+omega_train = scaler.fit_transform(W_train)
+omega_test = scaler.transform(W_test)
+
+<span class="cm"># 4. Support Vector Machine (Polynomial Kernel)</span>
+svm_classifier = SVC(kernel="poly", degree=2, coef0=1.0, random_state=42)
+svm_classifier.fit(omega_train, y_train)
+
+y_pred = svm_classifier.predict(omega_test)</pre>
+    </div>
+  </div>
+</div>
+`, badge:'badge-phase2', section:'Phase 2: Engineering', title:'Pipeline Architecture'},
 
 // ─── 8: THE MULTI-CLASS SVM CLASSIFIER ───
 {html: `
@@ -610,7 +624,7 @@ onRender: function() {
       </div>
       <div class="finding-card" style="border-color:var(--gold);">
         <div class="finding-icon">02</div>
-        <div class="finding-text"><strong>Data Cleaning is King:</strong> Bypassing the bad infrared colors, removing the 1-photo identities, and balancing the features lifted the accuracy from 10.4% to 28.04%.</div>
+        <div class="finding-text"><strong>Data Cleaning is King:</strong> Removing the 1-photo identities, and balancing the features lifted the accuracy from 10.4% to 28.04%.</div>
       </div>
     </div>
     <div>
@@ -644,12 +658,12 @@ onRender: function() {
   <div class="team-grid">
     <div class="team-member" onclick="this.classList.toggle('show-email')">
       <div class="name">Neerav Bhuyan</div>
-      <div class="role">Data Engineering, Pipeline Architecture & Machine Learning</div>
+      <div class="role">Data Engineering, Mathematical modeling, Pipeline Architecture & Machine Learning</div>
       <div class="email">neeravbhuyan@gmail.com</div>
     </div>
     <div class="team-member" onclick="this.classList.toggle('show-email')">
       <div class="name">Saptarshi Datta</div>
-      <div class="role">Mathematical Modeling, Evaluation & Reporting</div>
+      <div class="role">Mathematical Modeling, Machine Learning, Evaluation & Reporting</div>
       <div class="email">saptarshidatta28@gmail.com</div>
     </div>
   </div>
