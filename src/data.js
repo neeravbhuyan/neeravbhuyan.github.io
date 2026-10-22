@@ -142,7 +142,7 @@ export const profile = {
         {
           title: "View Certificate",
           type: "PDF",
-          href: "/resources/WorldQuant-Challenge-Gold-Certificate.pdf"
+          href: "/resources/WorldQuant Challenge Gold Certificate.pdf"
         },
       ],
     }
