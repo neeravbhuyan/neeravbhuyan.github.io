@@ -134,6 +134,16 @@ export const profile = {
       title: "CUET-UG 2025 Mathematics Percentile",
       details: "Scored 99.97 percentile in Mathematics in CUET (UG) 2025, reflecting strong analytical and quantitative ability.",
     },
+    {
+      metric: "GOLD", // If your schema uses 'rank', 'badge', or 'highlight' in data.js, match that exact key name from your AIR 18 object
+      title: "WorldQuant BRAIN Challenge",
+      details: "Awarded the Gold Level Certificate of Accomplishment in the WorldQuant Challenge for developing and backtesting quantitative alpha models and predictive financial signals.",
+      resources: {
+        title: "View Certificate",
+        type: "PDF",
+        href: "/resources/WorldQuant-Challenge-Gold-Certificate.pdf"
+    },
+}
   ],
   contact: {
     email: "neeravbhuyan@gmail.com",
