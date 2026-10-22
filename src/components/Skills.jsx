@@ -50,6 +50,7 @@ const skillsData = [
   { name: ' Exploratory Data Analysis', category: 'datascience', level: 'Proficient' },
   { name: 'Linear Programming Modeling', category: 'datascience', level: 'Proficient' },
   { name: 'Quadratic Programming Modeling', category: 'datascience', level: 'Proficient' },
+  { name: 'K-Nearest Neighbours', category: 'datascience', level: 'Proficient' },
   { name: 'Support Vector Machines', category: 'datascience', level: 'Proficient' },
   { name: 'Principal Compenent Analysis', category: 'datascience', level: 'Proficient' },
 
